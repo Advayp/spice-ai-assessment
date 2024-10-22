@@ -1,4 +1,3 @@
-use reqwest::header::IterMut;
 use serde::Serialize;
 
 use crate::models::scores::ScoreInfo;
