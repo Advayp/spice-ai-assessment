@@ -2,6 +2,8 @@
 extern crate rocket;
 extern crate dotenv;
 
+mod database;
+
 use dotenv::dotenv;
 
 // Create test route to ensure API is functional
