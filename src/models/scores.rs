@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(Deserialize, Debug, Serialize, Default)]
+#[derive(Deserialize, Debug, Serialize, Clone, Default)]
 pub struct ScoreInfo {
     pub id: u64,
     // Store as string for now, convert later to date/time if necessary
