@@ -1,2 +1,2 @@
-pub mod score;
+pub mod scores;
 pub mod utils;
