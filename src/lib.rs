@@ -3,6 +3,7 @@ extern crate rocket;
 extern crate dotenv;
 
 mod database;
+mod models;
 
 use dotenv::dotenv;
 
