@@ -2,7 +2,7 @@
 
 use std::env;
 
-use reqwest::header::HeaderMap;
+use reqwest::{header::HeaderMap, RequestBuilder};
 
 // Add two headers to authenticate requests to Supabase
 fn build_header_map() -> HeaderMap {
@@ -17,4 +17,20 @@ fn build_header_map() -> HeaderMap {
     );
 
     headers
+}
+
+enum RequestTypes {
+    GET,
+    POST,
+}
+
+fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder {
+    let client = reqwest::Client::new();
+
+    let header_map = build_header_map();
+
+    match request_type {
+        RequestTypes::GET => client.get(url).headers(header_map),
+        RequestTypes::POST => client.post(url).headers(header_map),
+    }
 }
