@@ -8,4 +8,5 @@ pub struct ScoreInfo {
     pub name: String,
     pub score: u64,
     pub notes: String,
+    pub uid: String,
 }

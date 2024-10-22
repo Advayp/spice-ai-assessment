@@ -19,6 +19,7 @@ struct InsertRowRequest {
     name: String,
     score: u64,
     notes: String,
+    uid: String,
 }
 
 pub async fn insert_rows(items: &Vec<ScoreInfo>) -> Result<(), Box<dyn std::error::Error>> {
@@ -32,6 +33,7 @@ pub async fn insert_rows(items: &Vec<ScoreInfo>) -> Result<(), Box<dyn std::erro
             name: item.name.clone(),
             score: item.score.clone(),
             notes: item.notes.clone(),
+            uid: item.uid.clone(),
         });
     }
 
