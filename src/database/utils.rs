@@ -24,6 +24,7 @@ enum RequestTypes {
     POST,
 }
 
+// Helper function to create `reqwest` client to simplify making requests to Supabase
 fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder {
     let client = reqwest::Client::new();
 
@@ -35,6 +36,7 @@ fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder
     }
 }
 
+// Three helper functions to easily build URLs
 fn build_url_from_base(url: String) -> String {
     let project_ref = env::var("PROJECT_REF").unwrap();
 
