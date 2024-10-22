@@ -1,0 +1,17 @@
+version: v1beta1
+kind: Spicepod
+name: sports-analytics
+
+datasets:
+  - from: postgres:scores
+    name: scores
+    params:
+      pg_host: ${env:PG_HOST}
+      pg_db: postgres
+      pg_port: ${env:PG_PORT}
+      pg_user: ${env:PG_USER}
+      pg_pass: ${env:PG_PASS}
+      pg_sslmode: require
+    acceleration:
+      enabled: true
+      refresh_mode: full
