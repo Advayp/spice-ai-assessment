@@ -19,13 +19,13 @@ fn build_header_map() -> HeaderMap {
     headers
 }
 
-enum RequestTypes {
+pub enum RequestTypes {
     GET,
     POST,
 }
 
 // Helper function to create `reqwest` client to simplify making requests to Supabase
-fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder {
+pub fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder {
     let client = reqwest::Client::new();
 
     let header_map = build_header_map();
@@ -37,16 +37,16 @@ fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder
 }
 
 // Three helper functions to easily build URLs
-fn build_url_from_base(url: String) -> String {
+pub fn build_url_from_base(url: String) -> String {
     let project_ref = env::var("PROJECT_REF").unwrap();
 
     format!("https://{}.supabase.co/{}", project_ref, url)
 }
 
-fn build_auth_url(url: String) -> String {
+pub fn build_auth_url(url: String) -> String {
     build_url_from_base(format!("/auth/v1/{}", url))
 }
 
-fn build_rest_url(url: String) -> String {
+pub fn build_rest_url(url: String) -> String {
     build_url_from_base(format!("/rest/v1/{}", url))
 }
