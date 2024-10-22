@@ -34,3 +34,17 @@ fn build_request_client(url: &str, request_type: RequestTypes) -> RequestBuilder
         RequestTypes::POST => client.post(url).headers(header_map),
     }
 }
+
+fn build_url_from_base(url: String) -> String {
+    let project_ref = env::var("PROJECT_REF").unwrap();
+
+    format!("https://{}.supabase.co/{}", project_ref, url)
+}
+
+fn build_auth_url(url: String) -> String {
+    build_url_from_base(format!("/auth/v1/{}", url))
+}
+
+fn build_rest_url(url: String) -> String {
+    build_url_from_base(format!("/rest/v1/{}", url))
+}
