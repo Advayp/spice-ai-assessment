@@ -4,6 +4,7 @@ extern crate dotenv;
 
 mod database;
 mod models;
+mod types;
 
 use dotenv::dotenv;
 
