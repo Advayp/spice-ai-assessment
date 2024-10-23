@@ -11,7 +11,7 @@ mod types;
 
 use dotenv::dotenv;
 use errors::not_found;
-use routes::scores::{add_scores, fetch_all_scores};
+use routes::scores;
 
 // Create test route to ensure API is functional
 #[get("/test")]
@@ -24,6 +24,13 @@ pub fn rocket() -> _ {
     dotenv().ok();
 
     rocket::build()
-        .mount("/api", routes![test, fetch_all_scores, add_scores])
+        .mount(
+            "/api",
+            routes![
+                scores::fetch_all_scores,
+                scores::add_scores,
+                scores::query_ai
+            ],
+        )
         .register("/", catchers![not_found])
 }

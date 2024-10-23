@@ -1,4 +1,5 @@
 use crate::{
+    ai::open_ai::{get_client, make_request},
     database::scores::{get_all_scores, insert_rows},
     models::scores::ScoreInfo,
     types::ValidateResponse,
@@ -54,4 +55,34 @@ pub async fn add_scores(scores: Json<AddScoreRequest>) -> Json<ValidateResponse>
     insert_rows(&converted_scores).await.unwrap();
 
     Json(ValidateResponse { success: true })
+}
+
+#[derive(Deserialize, Debug)]
+pub struct QueryAIRequest {
+    messages: Vec<String>,
+}
+
+#[derive(Serialize, Debug)]
+pub struct QueryAIResponse {
+    response: String,
+}
+
+#[get("/scores/query", data = "<messages>")]
+pub async fn query_ai(messages: Json<QueryAIRequest>) -> Json<QueryAIResponse> {
+    let requested_prompts = messages.into_inner().messages;
+
+    let client = get_client();
+
+    let response = make_request(client, requested_prompts).await;
+
+    let relevant_response = &response.choices[0];
+
+    match &relevant_response.message.content {
+        Some(message) => Json(QueryAIResponse {
+            response: message.to_string(),
+        }),
+        None => Json(QueryAIResponse {
+            response: String::from("No Response"),
+        }),
+    }
 }
