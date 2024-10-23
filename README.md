@@ -1,149 +1,64 @@
-# Spice AI Take-Home Assessment
+# Cricket Sports Analytics Tool
 
-Welcome to the Spice AI take-home assessment! This assignment is designed for university candidates applying for full-time or intern positions. You'll build a simple Rust application leveraging Spice.ai Open Source Software (OSS). This is an opportunity to showcase your ability to learn and apply new concepts quickly.
+## What is this?
 
-**Estimated Time to Complete:** Less than 4 hours  
-**Reward:** Submissions that meet all criteria will receive a Spice AI swag pack!
+This repository should serve as the backend for a tool that helps coaches (specifically those for the sport cricket) analyze their players' performance and help them improve.
 
----
+Here's how it does this:
 
-## Table of Contents
+1. The backend stores all players' performance with respect to some user. This user is the coach. Any retrieval is done with respect to some user, so that every coach can access only their data
+2. Using Spice AI's support for Retrieval-Augment-Generation (RAG), the backend enables users to ask complex questions in natural language about their data. This can be especially powerful in a coaching setting where, when creating plans, sifting through heaps of data or writing complex SQL queries is to cumbersome. Using natural language and Spice's support for RAG, this backend simplifies searching for relevant data significantly.
+3. This backend also implements vectorized searching through the `notes` entry tied to each score in the database. A coach can search through this column and find when a particular player has performed in a given way in the past quickly. With vectorization, I ensure that results similar to those requested are provided too, effectively going above and beyond in matching the coach's query.
 
-- [Spice AI Take-Home Assessment](#spice-ai-take-home-assessment)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-  - [Requirements](#requirements)
-  - [Submission Guidelines](#submission-guidelines)
-  - [Grading Criteria](#grading-criteria)
-  - [Extra Credit Opportunities](#extra-credit-opportunities)
-  - [Resources](#resources)
-  - [Getting Help](#getting-help)
+## Setup
 
----
+**Installations and API Setup**:
 
-## Overview
+- Create a project with Supabase
+- Ensure you have an OPEN AI Key
+- Install the spice runtime on your system
+- Ensure `cargo` is installed
 
-Your task is to create a simple Rust application that utilizes Spice.ai OSS for data and AI-driven functionality. You'll use this GitHub template to start your project, and your final submission will be a GitHub repository based on this template containing all required components.
+**Environment Setup**: After cloning this repo, ensure your `.env` file looks the following:
 
----
+```
+SUPABASE_KEY=<API KEY LISTED ON SUPABASE>
+PROJECT_REF=<AS LISTED ON SUPABASE>
+PG_HOST=<HOST LISTED ON SUPABASE>
+PG_PORT=<PORT LISTED ON SUPABASE>
+PG_USER=<USER LISTED ON SUPABASE>
+PG_PASS=<PASSWORD TO PG DB ON SUPABASE>
+OPENAI_KEY=<YOUR OPENAI KEY>
+```
 
-## Requirements
+Also ensure that your OpenAI API key is stored as an environment variable on your system.
 
-Your repository should include the following:
+**Supabase Setup**:
 
-1. **Rust Application**
+1. Create a table called `scores`
+2. Modify the table policies such that any anonymous and authenticated can make changes to the table
+3. Create the following additional columns (leaving `id` and `created_at` as is) with the following types:
 
-   - A simple application built in Rust that demonstrates your ability to use Rust effectively.
-   - Incorporate Spice.ai OSS to enhance your application's functionality.
+| Column Name | Type   |
+| ----------- | ------ |
+| `name`      | `text` |
+| `uid`       | `text` |
+| `score`     | `int8` |
+| `notes`     | `text` |
 
-2. **One or More `spicepod.yml` Files**
+## Running the Application
 
-   - Define your data connectors, embeddings, and models using `spicepod.yml`.
-   - Ensure your Spicepods are well-structured and documented.
+1. Run `spice run`
+2. In a separate terminal, run `cargo run`. This should start the server on port 8000.
+3. That's it! Feel free to make requests to any of the available end points.
 
-3. **Documentation**
+## All Routes
 
-   - Provide clear documentation explaining:
-     - The purpose of your application.
-     - How to build and run it.
-     - Any dependencies or setup instructions.
-     - An explanation of your Spicepods.
-     - Any credentials required.
-
-4. **GitHub Issues for Project Management**
-   - Use GitHub Issues to track your project's tasks and progress.
-   - Include meaningful commit messages linked to your issues.
-
----
-
-## Submission Guidelines
-
-1. **Use this GitHub Template**
-
-   - Use this repository template to create your repository.
-     
-  <img width="433" alt="image" src="https://github.com/user-attachments/assets/08bec3eb-8afc-4951-ba5a-78b762a055b1">
-
-2. **Develop Your Application**
-
-   - Implement your Rust application and Spicepods within the repository.
-   - Regularly commit your changes with descriptive messages.
-
-3. **Manage Your Project with GitHub Issues**
-
-   - Create issues for tasks, features, and bugs.
-   - Close issues via commit messages (e.g., `Fixes #1 - Implement data connector`).
-
-4. **Document Your Work**
-
-   - Update the `README.md` in your repository with your application's documentation.
-
-5. **Submit Your Repository**
-   - Once complete, ensure your repository is public.
-   - Email the link to your recruiter or submit it as per the application instructions.
-
----
-
-## Grading Criteria
-
-Your submission will be evaluated based on:
-
-1. **Use of Data Connectors, Embeddings, and Models**
-
-   - Diversity and creativity in using Spice.ai features.
-
-2. **Code Quality**
-
-   - Clean, efficient, and well-documented Rust code.
-   - Proper use of SQL if applicable.
-
-3. **Application Usefulness**
-   - The practicality and originality of your application.
-
----
-
-## Extra Credit Opportunities
-
-Boost your submission by:
-
-1. **Community Engagement**
-
-   - Help others by answering questions in Discord.
-
-2. **Submitting High-Quality Bug Reports**
-   - Report any issues you find to [Spice.ai GitHub Issues](https://github.com/spiceai/spiceai/issues) with detailed information.
-
----
-
-## Resources
-
-- **Spice.ai OSS Rust SDK**
-
-  - Office SDK for Rust: [github.com/spiceai/spice-rs](https://github.com/spiceai/spice-rs)
-
-- **Spice.ai OSS Samples**
-
-  - Explore example applications: [spiceai/samples](https://github.com/spiceai/samples)
-
-- **Spice.ai OSS Quickstarts**
-
-  - Get started quickly with these guides: [spiceai/quickstarts](https://github.com/spiceai/quickstarts)
-
-- **Spice.ai OSS Documentation**
-
-  - Official docs: [docs.spiceai.org](https://docs.spiceai.org)
-
-- **Rust Language Resources**
-  - Rust documentation: [doc.rust-lang.org](https://doc.rust-lang.org)
-
----
-
-## Getting Help
-
-- **Discord Community**
-
-  - Join our Discord server and ask and answer questions in the `#help` channel: [Spice AI Discord](https://discord.gg/kZnTfneP5u)
-
----
-
-**Good luck!**
+| Path                  | Method | Function                                                | Request Body                              | Response                       |
+| --------------------- | ------ | ------------------------------------------------------- | ----------------------------------------- | ------------------------------ |
+| `/api/scores/all`     | GET    | Get all scores with the given `uid`                     | `{uid: int}`                              | `Score[]`                      |
+| `/api/scores/insert`  | POST   | Insert a score into the database                        | `ScoreFields[]`                           | `{success: bool}`              |
+| `/api/scores/query`   | GET    | Query the database with natural language                | `{messages: String[], uid: int}`          | `{response: Stringified Json}` |
+| `/api/scores/vsearch` | GET    | Search for a particular entry and those like it quickly | `{text: String, limit: int, uid: String}` | `Score[]`                      |
+| `/api/user/signup`    | POST   | Sign Up for an account                                  | `{email: String, password: String}`       | `UserInfo`                     |
+| `/api/user/login`     | POST   | Login                                                   | `{email: String, password: String}`       | `UserInfo`                     |

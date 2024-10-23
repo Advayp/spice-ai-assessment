@@ -1,9 +1,11 @@
+// Generated using: https://transform.tools/json-to-rust-serde
+
 use serde_derive::Deserialize;
 use serde_derive::Serialize;
 
 #[derive(Default, Debug, Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct Root {
+pub struct UserInfo {
     #[serde(rename = "access_token")]
     pub access_token: String,
     #[serde(rename = "token_type")]
