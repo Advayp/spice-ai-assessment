@@ -5,7 +5,7 @@ use crate::{
     models::user::Root,
 };
 
-#[get("/user/signup", data = "<auth>")]
+#[post("/user/signup", data = "<auth>")]
 pub async fn sign_up(auth: Json<AuthData>) -> Json<Root> {
     let email = auth.clone().into_inner().email;
     let password = auth.into_inner().password;
@@ -15,7 +15,7 @@ pub async fn sign_up(auth: Json<AuthData>) -> Json<Root> {
     Json(res.json::<Root>().await.unwrap())
 }
 
-#[get("/user/login", data = "<auth>")]
+#[post("/user/login", data = "<auth>")]
 pub async fn login(auth: Json<AuthData>) -> Json<Root> {
     let email = auth.clone().into_inner().email;
     let password = auth.into_inner().password;
