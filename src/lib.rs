@@ -2,6 +2,7 @@
 extern crate rocket;
 extern crate dotenv;
 
+mod ai;
 mod database;
 mod errors;
 mod models;
