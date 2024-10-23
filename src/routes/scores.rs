@@ -62,9 +62,10 @@ pub async fn add_scores(scores: Json<AddScoreRequest>) -> Json<ValidateResponse>
     Json(ValidateResponse { success: true })
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Clone)]
 pub struct QueryAIRequest {
     messages: Vec<String>,
+    uid: String,
 }
 
 #[derive(Serialize, Debug)]
@@ -74,9 +75,15 @@ pub struct QueryAIResponse {
 
 #[get("/scores/query", data = "<messages>")]
 pub async fn query_ai(messages: Json<QueryAIRequest>) -> Json<QueryAIResponse> {
-    let requested_prompts = messages.into_inner().messages;
+    let mut requested_prompts = messages.clone().into_inner().messages;
+    let uid = messages.into_inner().uid;
 
     let client = get_client();
+
+    requested_prompts.push(format!(
+        "Filter your results to only users with \"uid\" equal to {}",
+        uid
+    ));
 
     let response = make_request(client, requested_prompts).await;
 
