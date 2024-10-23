@@ -3,17 +3,17 @@ use rocket::serde::{Deserialize, Serialize};
 use crate::models::scores::ScoreInfo;
 
 #[derive(Deserialize, Serialize)]
-struct SearchMatch {
+pub struct SearchMatch {
     value: String,
     score: f64,
     dataset: String,
-    metadata: ScoreInfo,
+    pub metadata: ScoreInfo,
 }
 
 #[derive(Deserialize, Serialize)]
 pub struct SearchResponse {
-    matches: Vec<SearchMatch>,
-    duration: f64,
+    pub matches: Vec<SearchMatch>,
+    duration_ms: f64,
 }
 
 #[derive(Serialize)]
@@ -26,7 +26,7 @@ struct SearchRequest {
 
 fn build_body(text: String, limit: u16) -> SearchRequest {
     SearchRequest {
-        datasets: vec!["score".to_string()],
+        datasets: vec!["scores".to_string()],
         text,
         additional_columns: vec![
             "id".to_string(),

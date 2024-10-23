@@ -29,7 +29,8 @@ pub fn rocket() -> _ {
             routes![
                 scores::fetch_all_scores,
                 scores::add_scores,
-                scores::query_ai
+                scores::query_ai,
+                scores::vectorized_search
             ],
         )
         .register("/", catchers![not_found])

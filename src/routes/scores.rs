@@ -1,5 +1,8 @@
 use crate::{
-    ai::open_ai::{get_client, make_request},
+    ai::{
+        embeddings::search,
+        open_ai::{get_client, make_request},
+    },
     database::scores::{get_all_scores, insert_rows},
     models::scores::ScoreInfo,
     types::ValidateResponse,
@@ -97,4 +100,30 @@ pub async fn query_ai(messages: Json<QueryAIRequest>) -> Json<QueryAIResponse> {
             response: String::from("No Response"),
         }),
     }
+}
+
+#[derive(Deserialize, Clone)]
+pub struct VectorSearchRequest {
+    text: String,
+    limit: u16,
+    uid: String,
+}
+
+#[get("/scores/vsearch", data = "<req>")]
+pub async fn vectorized_search(req: Json<VectorSearchRequest>) -> Json<Vec<ScoreInfo>> {
+    let search_text = req.clone().into_inner().text;
+    let limit = req.clone().into_inner().limit;
+    let uid = req.into_inner().uid;
+
+    let search_results = search(search_text, limit).await;
+
+    let mut res: Vec<ScoreInfo> = vec![];
+
+    for valid_match in search_results.matches {
+        if valid_match.metadata.uid == uid {
+            res.push(valid_match.metadata);
+        }
+    }
+
+    Json(res)
 }
