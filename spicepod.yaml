@@ -2,6 +2,10 @@ version: v1beta1
 kind: Spicepod
 name: sports-analytics
 
+embeddings:
+  - name: local_embedding_model
+    from: huggingface:huggingface.co/sentence-transformers/all-MiniLM-L6-v2
+
 datasets:
   - from: postgres:scores
     name: scores
@@ -15,6 +19,9 @@ datasets:
     acceleration:
       enabled: true
       refresh_mode: full
+    embeddings:
+      - column: notes # enable coaches to search through notes quickly
+        use: local_embedding_model
 
 models:
   - from: openai:gpt-4o
