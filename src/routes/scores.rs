@@ -14,9 +14,14 @@ pub struct ScoreResponse {
     scores: Vec<ScoreInfo>,
 }
 
-#[get("/scores/all")]
-pub async fn fetch_all_scores() -> Json<ScoreResponse> {
-    let scores = get_all_scores().await.unwrap();
+#[derive(Deserialize)]
+pub struct ScoreRequest {
+    uid: String,
+}
+
+#[get("/scores/all", data = "<uid>")]
+pub async fn fetch_all_scores(uid: Json<ScoreRequest>) -> Json<ScoreResponse> {
+    let scores = get_all_scores(uid.into_inner().uid).await.unwrap();
 
     let res = ScoreResponse { scores };
 
