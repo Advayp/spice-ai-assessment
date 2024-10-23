@@ -39,3 +39,16 @@ fn build_body(text: String, limit: u16) -> SearchRequest {
         limit,
     }
 }
+
+pub async fn search(text: String, limit: u16) -> SearchResponse {
+    let client = reqwest::Client::new();
+
+    let res = client
+        .post("http://localhost:8090/v1/search")
+        .json(&build_body(text, limit))
+        .send()
+        .await
+        .unwrap();
+
+    res.json::<SearchResponse>().await.unwrap()
+}
