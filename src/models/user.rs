@@ -27,8 +27,6 @@ pub struct User {
     #[serde(rename = "email_confirmed_at")]
     pub email_confirmed_at: String,
     pub phone: String,
-    #[serde(rename = "confirmed_at")]
-    pub confirmed_at: String,
     #[serde(rename = "last_sign_in_at")]
     pub last_sign_in_at: String,
     #[serde(rename = "app_metadata")]
