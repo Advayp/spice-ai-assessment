@@ -1,6 +1,9 @@
 use async_openai::{
     config::OpenAIConfig,
-    types::{ChatCompletionRequestMessage, ChatCompletionRequestSystemMessageArgs},
+    types::{
+        ChatCompletionRequestMessage, ChatCompletionRequestSystemMessageArgs,
+        CreateChatCompletionRequest, CreateChatCompletionRequestArgs, CreateCompletionRequest,
+    },
     Client,
 };
 
@@ -20,4 +23,30 @@ fn get_initial_prompt() -> ChatCompletionRequestMessage {
         .build()
         .unwrap()
         .into()
+}
+
+fn get_message_args(messages: Vec<String>) -> Vec<ChatCompletionRequestMessage> {
+    let mut res: Vec<ChatCompletionRequestMessage> = vec![get_initial_prompt()];
+
+    for message in messages {
+        res.push(
+            ChatCompletionRequestSystemMessageArgs::default()
+                .content(message)
+                .build()
+                .unwrap()
+                .into(),
+        );
+    }
+
+    res
+}
+
+fn get_request_params(messages: Vec<String>) -> CreateChatCompletionRequest {
+    let processed_messages = get_message_args(messages);
+
+    CreateChatCompletionRequestArgs::default()
+        .model("local_analytics_model")
+        .messages(processed_messages)
+        .build()
+        .unwrap()
 }
