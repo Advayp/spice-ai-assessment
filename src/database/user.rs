@@ -3,13 +3,13 @@ use rocket::serde::{Deserialize, Serialize};
 
 use super::utils::{build_auth_url, build_request_client, RequestTypes};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Clone)]
 pub struct AuthData {
-    email: String,
-    password: String,
+    pub email: String,
+    pub password: String,
 }
 
-pub async fn sign_in(
+pub async fn sign_up(
     email: String,
     password: String,
 ) -> Result<Response, Box<dyn std::error::Error>> {
