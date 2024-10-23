@@ -23,3 +23,19 @@ struct SearchRequest {
     additional_columns: Vec<String>,
     limit: u16,
 }
+
+fn build_body(text: String, limit: u16) -> SearchRequest {
+    SearchRequest {
+        datasets: vec!["score".to_string()],
+        text,
+        additional_columns: vec![
+            "id".to_string(),
+            "created_at".to_string(),
+            "name".to_string(),
+            "score".to_string(),
+            "notes".to_string(),
+            "uid".to_string(),
+        ],
+        limit,
+    }
+}
