@@ -2,7 +2,7 @@ use async_openai::{
     config::OpenAIConfig,
     types::{
         ChatCompletionRequestMessage, ChatCompletionRequestSystemMessageArgs,
-        CreateChatCompletionRequest, CreateChatCompletionRequestArgs, CreateCompletionRequest,
+        CreateChatCompletionRequest, CreateChatCompletionRequestArgs, CreateChatCompletionResponse,
     },
     Client,
 };
@@ -49,4 +49,13 @@ fn get_request_params(messages: Vec<String>) -> CreateChatCompletionRequest {
         .messages(processed_messages)
         .build()
         .unwrap()
+}
+
+pub async fn make_request(
+    client: Client<OpenAIConfig>,
+    messages: Vec<String>,
+) -> CreateChatCompletionResponse {
+    let params = get_request_params(messages);
+
+    client.chat().create(params).await.unwrap()
 }
